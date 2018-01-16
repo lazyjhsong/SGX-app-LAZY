@@ -1,0 +1,10 @@
+# source only
+*.o
+*.so
+*.a
+
+*.pem
+*.xml
+
+*cscope*
+tags
