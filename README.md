@@ -1,5 +1,2 @@
 /* jhSong's SGX app */
 
-
-
-
