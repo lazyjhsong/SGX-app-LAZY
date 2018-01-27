@@ -1,0 +1,5 @@
+/home/jhsong/work/sgx/SGX-app-LAZY/simple/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/jhsong/work/sgx/SGX-app-LAZY/simple/cmake-build-debug/CMakeFiles/app_clean.dir
+/home/jhsong/work/sgx/SGX-app-LAZY/simple/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/jhsong/work/sgx/SGX-app-LAZY/simple/cmake-build-debug/CMakeFiles/app_realease.dir
+/home/jhsong/work/sgx/SGX-app-LAZY/simple/cmake-build-debug/CMakeFiles/app.dir

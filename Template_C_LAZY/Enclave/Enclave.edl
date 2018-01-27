@@ -1,0 +1,19 @@
+/*
+ * Created by jhsong on 18. 1. 27.
+*/
+
+enclave {
+    trusted
+    {
+        /* define ECALLs here. */
+        public void ecall_print([in, string]const char* str);
+        public void ecall_print_trace([in, string]const char* str);
+    };
+
+    untrusted
+    {
+        /* define OCALLs here. */
+        void ocall_print([in, string]const char* str);
+        void ocall_print_trace([in, string]const char* str);
+    };
+};

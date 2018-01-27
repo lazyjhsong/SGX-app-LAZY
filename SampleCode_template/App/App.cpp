@@ -13,7 +13,7 @@ void ocall_print(const char* str) {
 }
 
 int main(int argc, char const *argv[]) {
-    if (initialize_enclave(&global_eid, "enclave.token", "enclave.signed.so") < 0) {
+    if (initialize_enclave(&global_eid, "/home/jhsong/enclave.token", "enclave.signed.so") < 0) {
         std::cout << "Fail to initialize enclave." << std::endl;
         return 1;
     }

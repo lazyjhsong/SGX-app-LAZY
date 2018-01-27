@@ -1,0 +1,7 @@
+# source only
+*.o
+*.so
+*.a
+
+*cscope*
+tags

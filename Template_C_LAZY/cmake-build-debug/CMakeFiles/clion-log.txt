@@ -1,0 +1,4 @@
+/home/jhsong/src/ide/clion-2017.3.2/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/jhsong/work/sgx/SGX-app-LAZY/Template_C_LAZY
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/jhsong/work/sgx/SGX-app-LAZY/Template_C_LAZY/cmake-build-debug

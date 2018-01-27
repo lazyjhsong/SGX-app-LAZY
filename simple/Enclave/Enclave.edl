@@ -1,13 +1,21 @@
-enclave {
-    from "Sealing/Sealing.edl" import *;
+/*
+ * Created by jhsong on 18. 1. 27.
+*/
 
-    trusted {
+enclave {
+    trusted
+    {
         /* define ECALLs here. */
-        public int generate_random_number(void);
+        public void ecall_print([in, string]const char* str);
+        public void ecall_print_trace([in, string]const char* str);
+        public int ecall_lazy_syscall([in]const int *no);
     };
 
-    untrusted {
+    untrusted
+    {
         /* define OCALLs here. */
         void ocall_print([in, string]const char* str);
+        void ocall_print_trace([in, string]const char* str);
+        int ocall_lazy_syscall([in]const int *no);
     };
 };
