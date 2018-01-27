@@ -1,6 +1,5 @@
-#
 # LAZYjhSong's SGX app 
-#
+jhsong@calab.kaist.ac.kr
 
 # Template_C_LAZY
 SGX Template for C by LAZY
