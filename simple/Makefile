@@ -85,13 +85,16 @@ App_C_Flags := $(SGX_COMMON_CFLAGS) -fPIC -Wno-attributes $(App_Include_Paths)
 #   Debug - Macro DEBUG enabled.
 #   Prerelease - Macro NDEBUG and EDEBUG enabled.
 #   Release - Macro NDEBUG enabled.
+ifeq ($(SGX_MODE), HW)
 ifeq ($(SGX_DEBUG), 1)
-        App_C_Flags += -DDEBUG -UNDEBUG -UEDEBUG
+        App_C_Flags += -DDEBUG -UNDEBUG -UEDEBUG -DLAZYHWDEBUG
 else ifeq ($(SGX_PRERELEASE), 1)
-        App_C_Flags += -DNDEBUG -DEDEBUG -UDEBUG
-else
-        App_C_Flags += -DNDEBUG -UEDEBUG -UDEBUG
-        #App_C_Flags += -DDEBUG -UEDEBUG -UNDEBUG
+        App_C_Flags += -DNDEBUG -DEDEBUG -UDEBUG -DLAZYHWPRERELEASE
+else 
+        App_C_Flags += -DNDEBUG -UEDEBUG -UDEBUG -DLAZYHWRELEASE
+endif
+else 
+        App_C_Flags += -DLAZYSIM
 endif
 
 #App_Cpp_Flags := $(App_C_Flags) -std=c++11
@@ -106,7 +109,9 @@ endif
 App_C_Objects := $(App_C_Files:.c=.o)
 
 App_Name := app
-App_Name_Release :=app_release
+App_Name_Release := app_release
+App_Name_Prerelease := app_prerelease
+App_Name_SIM := app_sim
 
 ######## Enclave Settings ########
 
@@ -169,25 +174,29 @@ all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name_Release) $(Enclave_Name)
 	@echo "You can also sign the enclave using an external signing tool."
 	@echo "To build the project in simulation mode set SGX_MODE=SIM. To build the project in prerelease mode set SGX_PRERELEASE=1 and SGX_MODE=HW."
 else
-all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name) $(Signed_Enclave_Name)
 ifeq ($(Build_Mode), HW_DEBUG)
+all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name) $(Signed_Enclave_Name)
 	@echo "The project has been built in debug hardware mode."
 else ifeq ($(Build_Mode), SIM_DEBUG)
+all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name_SIM) $(Signed_Enclave_Name)
 	@echo "The project has been built in debug simulation mode."
 else ifeq ($(Build_Mode), HW_PRERELEASE)
+all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name_Prerelease) $(Signed_Enclave_Name)
 	@echo "The project has been built in pre-release hardware mode."
 else ifeq ($(Build_Mode), SIM_PRERELEASE)
+all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name_SIM) $(Signed_Enclave_Name)
 	@echo "The project has been built in pre-release simulation mode."
 else
+all: .config_$(Build_Mode)_$(SGX_ARCH) $(App_Name_SIM) $(Signed_Enclave_Name)
 	@echo "The project has been built in release simulation mode."
 endif
 endif
 
-run: all
-ifneq ($(Build_Mode), HW_RELEASE)
-	@$(CURDIR)/$(App_Name)
-	@echo "RUN  =>  $(App_Name) [$(SGX_MODE)|$(SGX_ARCH), OK]"
-endif
+#run: all
+#ifneq ($(Build_Mode), HW_RELEASE)
+#	@$(CURDIR)/$(App_Name)
+#	@echo "RUN  =>  $(App_Name) [$(SGX_MODE)|$(SGX_ARCH), OK]"
+#endif
 
 ######## App Objects ########
 
@@ -210,6 +219,14 @@ $(App_Name): App/Enclave_u.o $(App_C_Objects)
 $(App_Name_Release): App/Enclave_u.o $(App_C_Objects)
 	@$(CC) $^ -o $@ $(App_Link_Flags)
 	@echo "LINK =>  $@"
+	
+$(App_Name_Prerelease): App/Enclave_u.o $(App_C_Objects)
+	@$(CC) $^ -o $@ $(App_Link_Flags)
+	@echo "LINK =>  $@"
+	
+$(App_Name_SIM): App/Enclave_u.o $(App_C_Objects)
+	@$(CC) $^ -o $@ $(App_Link_Flags)
+	@echo "LINK =>  $@"	
 
 .config_$(Build_Mode)_$(SGX_ARCH):
 	@rm -f .config_* $(App_Name) $(Enclave_Name) $(Signed_Enclave_Name) $(App_C_Objects) App/Enclave_u.* $(Enclave_C_Objects) Enclave/Enclave_t.*
@@ -240,4 +257,4 @@ $(Signed_Enclave_Name): $(Enclave_Name)
 .PHONY: clean
 
 clean:
-	@rm -f .config_* $(App_Name) $(Enclave_Name) $(Signed_Enclave_Name) $(App_C_Objects) App/Enclave_u.* $(Enclave_C_Objects) Enclave/Enclave_t.*
+	@rm -f .config_* $(App_Name) $(App_Name_Release) $(App_Name_Prerelease) $(App_Name_SIM) $(Enclave_Name) $(Signed_Enclave_Name) $(App_C_Objects) App/Enclave_u.* $(Enclave_C_Objects) Enclave/Enclave_t.*

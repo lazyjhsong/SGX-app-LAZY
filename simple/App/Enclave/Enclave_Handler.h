@@ -42,6 +42,7 @@ typedef struct _sgx_errlist_t {
 } sgx_errlist_t;
 
 /* user func */
+void handler_print_app_mode(void);
 void handler_print_error_msg(sgx_status_t);
 int handler_init_enclave(void);
 int handler_destroy_enclave(sgx_enclave_id_t);

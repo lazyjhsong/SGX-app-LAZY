@@ -56,6 +56,9 @@ int main(int argc, char *argv[])
     /* var */
     int ret = 0;
 
+    /* print app mode */
+    handler_print_app_mode();
+
     /* Initialize the enclave */
     if(app_init_enclave() < 0)
     {

@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.9)
 project(simple)
 
+
 set(CMAKE_C_STANDARD 99)
+
+
+include_directories(/opt/intel/sgxsdk/include/)
+
 
 # make
 add_custom_target(app
