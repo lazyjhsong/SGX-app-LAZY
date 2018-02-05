@@ -28,6 +28,11 @@ int ocall_lazy_syscall(const int* no)
     { printf("LAZY System Call fail -> [OCall]\n"); }
     return ret;
 }
+
+void ocall_rdtscp_test1(int* var)
+{
+	// do something
+}
 /* ocall func end */
 
 /* user func begin */
@@ -53,8 +58,20 @@ int app_destroy_enclave(sgx_enclave_id_t id)
 /* main begin */
 int main(int argc, char *argv[])
 {
-    /* var */
-    int ret = 0;
+    /* user var */
+    int ret=0, u_loop=0;
+    uint64_t cycle=0;
+
+    /* argv */
+	if(argc != 2)
+	{
+		printf("Usage : ./app [loop]\n");
+		return -1;
+	}
+	else
+	{
+		u_loop = atoi(argv[1]);
+	}
 
     /* print app mode */
     handler_print_app_mode();
@@ -67,30 +84,33 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    /* hello world */
-    helloworld(global_eid);
-    printf("\n");
+    /* RDTSCP */
+    cycle = rdtscp_test1(global_eid, u_loop);
+    printf("Run Cycle(HW) -> %lu\n\n",cycle);
 
-    /* lazy syscall */
-    ret = lazy_syscall(global_eid);
-    if(ret==0)
-    { printf("LAZY System Call Success -> [App]\n"); }
-    else
-    { printf("LAZY System Call fail -> [App]\n"); }
-    printf("LAZY System Call return : %d\n\n", ret);
+//    /* hello world */
+//    cycle = helloworld(global_eid);
+//    printf("\nRun Cycle(HW) = %lu\n\n",cycle);
+//
+//    /* lazy syscall */
+//    ret = lazy_syscall(global_eid);
+//    if(ret==0)
+//    { printf("LAZY System Call Success -> [App]\n"); }
+//    else
+//    { printf("LAZY System Call fail -> [App]\n"); }
+//    printf("LAZY System Call return : %d\n\n", ret);
 
     /* Destroy the enclave */
     if(sgx_destroy_enclave(global_eid) < 0)
     {
-        printf("Enter a character before exit ...\n");
-        getchar();
+        printf("EXIT -> LAZY Enclave unsuccessfully returned.\n");
         return -1;
     }
 
-    printf("Info: LAZY Enclave successfully returned.\n");
+    printf("EXIT -> LAZY Enclave successfully returned.\n");
 
-    printf("Enter a character before exit ...\n");
-    getchar();
+//    printf("Enter a character before exit ...\n");
+//    getchar();
     return 0;
 }
 /* main end */

@@ -89,19 +89,19 @@ static sgx_errlist_t sgx_errlist[] = {
 /* user func begin */
 void handler_print_app_mode(void)
 {
-	printf("**************************************\n");
+	//printf("**************************************\n");
 #ifdef LAZYHWDEBUG
-	printf("RUN -> app [HW | DEBUG]\n");
+	printf("RUN -> app [HW | DEBUG]\n\n");
 #elif LAZYHWPRERELEASE
-	printf("RUN -> app_prerelease [HW | PRERELEASE]\n");
+	printf("RUN -> app_prerelease [HW | PRERELEASE]\n\n");
 #elif LAZYHWRELEASE
-	printf("RUN -> app [HW | DEBUG]\n");
+	printf("RUN -> app [HW | DEBUG]\n\n");
 #elif LAZYSIM
-	printf("RUN -> app [SIMULATION | - ]\n");
+	printf("RUN -> app [SIMULATION | - ]\n\n");
 #else
-	printf("RUN -> app [Something is wrong\n");
+	printf("RUN -> app [Something is wrong\n\n");
 #endif
-	printf("**************************************\n");
+	//printf("**************************************\n");
 }
 void handler_print_error_msg(sgx_status_t ret)
 {

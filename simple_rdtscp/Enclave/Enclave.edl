@@ -8,7 +8,8 @@ enclave {
         /* define ECALLs here. */
         public void ecall_print([in, string]const char* str);
         public void ecall_print_trace([in, string]const char* str);
-        public int ecall_lazy_syscall([in]const int *no);
+        public int ecall_lazy_syscall([in]const int* no);
+        public void ecall_rdtscp_test1([in]int* var);
     };
 
     untrusted
@@ -17,5 +18,6 @@ enclave {
         void ocall_print([in, string]const char* str);
         void ocall_print_trace([in, string]const char* str);
         int ocall_lazy_syscall([in]const int *no);
+        void ocall_rdtscp_test1([in]int* var);
     };
 };

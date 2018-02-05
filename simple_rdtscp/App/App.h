@@ -21,11 +21,13 @@
 #include "Enclave/Enclave_Handler.h"
 #include "User/HelloWorld.h"
 #include "User/LazySyscall.h"
+#include "User/LAZYRdtscp.h"
 
 /* ocall func */
 void ocall_print(const char*);
 void ocall_print_trace(const char*);
 int ocall_lazy_syscall(const int*);
+void ocall_rdtscp_test1(int*);
 
 /* user func */
 //void app_print_error_msg(sgx_status_t);

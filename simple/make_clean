@@ -1,0 +1,4 @@
+#!/bin/sh
+echo "make clean"
+#make clean
+python ./make_clean.py

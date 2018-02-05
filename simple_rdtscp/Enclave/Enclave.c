@@ -26,6 +26,18 @@ int ecall_lazy_syscall(const int* no)
     { enclave_printf("LAZY System Call fail -> [ECall]"); }
     return ret;
 }
+
+void ecall_rdtscp_test1(int* var)
+{
+	// do something
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	register uint64_t start=0, end=0, cycle=0, cycle_avg=0;
+
+	start = __rdtscp( & junk);
+	end = __rdtscp( & junk);
+
+}
 /* ecall func end */
 
 /* user enclave func begin */

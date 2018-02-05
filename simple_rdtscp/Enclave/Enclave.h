@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <x86intrin.h>
 
 /* sgx h */
 #include "Enclave_t.h"
@@ -18,6 +19,7 @@
 void ecall_print(const char*);
 void ecall_print_trace(const char*);
 int ecall_lazy_syscall(const int*);
+void ecall_rdtscp_test1(int*);
 
 /* user enclave func */
 void enclave_printf(const char *fmt, ...);
