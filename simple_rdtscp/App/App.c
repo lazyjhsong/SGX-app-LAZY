@@ -98,13 +98,35 @@ void ocall_inout_pass_rdtscp(char* var, size_t size)
 }
 
 void ocall_in_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(App_char_tmp,var[0],size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	printf("[%c-%c,%c-%c,%c-%c] <- [A]ocall_in_set\n", var[0], var[size-1], App_char_tmp[0], App_char_tmp[size-1], App_char_var[0], App_char_var[size-1]);
+#endif
+}
 
 void ocall_out_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(var,App_char_var[0],size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	printf("[%c-%c,%c-%c,%c-%c] <- [A]ocall_out_set\n", var[0], var[size-1], App_char_tmp[0], App_char_tmp[size-1], App_char_var[0], App_char_var[size-1]);
+#endif
+}
 
 void ocall_inout_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(App_char_tmp,var[0],size);
+	memset(var,App_char_var[0],size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	printf("[%c-%c,%c-%c,%c-%c] <- [A]ocall_in_set\n", var[0], var[size-1], App_char_tmp[0], App_char_tmp[size-1], App_char_var[0], App_char_var[size-1]);
+#endif
+}
 
 void ocall_in_cp_rdtscp(char* var, size_t size)
 {
@@ -212,16 +234,15 @@ int main(int argc, char *argv[])
 		App_warm = atoi(argv[3]);
 		App_loop = atoi(argv[2]);
 		App_size = (size_t)atoi(argv[1]);
+		if((App_warm < 1) || (App_loop < 1) || (App_size < 1))
+		{
+			printf("\nsize, loop, warm < 1\n");
+			exit(EXIT_FAILURE);
+		}
 	}
 	else
 	{
 		printf("\nusage: ./app or ./app size loop warm\n");
-		exit(EXIT_FAILURE);
-	}
-
-	if((App_warm < 1) || (App_loop < 1) || (App_size < 1))
-	{
-		printf("\nsize, loop, warm < 1\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -308,6 +329,35 @@ int main(int argc, char *argv[])
 #ifdef TESTCHARSET
 	printf("\n[TEST] -> CHAR SET\n");
 
+	cycles_ecall_in_set = test_ecall_in_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ecall_IN_SET] -> %lu\n",cycles_ecall_in_set);
+#endif
+
+	cycles_ecall_out_set = test_ecall_out_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ecall_OUT_SET] -> %lu\n",cycles_ecall_out_set);
+#endif
+
+	cycles_ecall_inout_set = test_ecall_inout_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ecall_INOUT_SET] -> %lu\n",cycles_ecall_inout_set);
+#endif
+
+	cycles_ocall_in_set = test_ocall_in_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ocall_IN_SET] -> %lu\n",cycles_ocall_in_set);
+#endif
+
+	cycles_ocall_out_set = test_ocall_out_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ocall_OUT_SET] -> %lu\n",cycles_ocall_out_set);
+#endif
+
+	cycles_ocall_inout_set = test_ocall_inout_set_rdtscp(global_eid);
+#ifndef LAZYPDEBUG
+	printf("Run Cycle[Ocall_INOUT_SET] -> %lu\n",cycles_ocall_inout_set);
+#endif
 #endif
 
 #ifdef TESTCHARCP

@@ -940,27 +940,425 @@ uint64_t test_ocall_inout_pass_rdtscp(sgx_enclave_id_t id)
 
 uint64_t test_ecall_in_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start=0, end=0, cycle=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_in_set_rdtscp(id, App_char_tmp, T_size);
+		__rdtscp( & junk);
+	}
+#endif
+
+	test_reset_char_tmp(id, T_size);
+
+	/* loop */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_in_set(before)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+		/* RDTSCP start */
+		start = __rdtscp( & junk);
+
+		/* Ecall IN SET */
+	    ecall_in_set_rdtscp(id, App_char_tmp, T_size);
+
+	    /* RDTSCP end */
+	    end = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	    printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_in_set(after)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+	    /* cycle */
+	    cycle += (end - start);
+	}
+
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
 uint64_t test_ecall_out_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start=0, end=0, cycle=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_out_set_rdtscp(id, App_char_tmp, T_size);
+		__rdtscp( & junk);
+	}
+#endif
+
+	test_reset_char_tmp(id, T_size);
+
+	/* loop */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_out_set(before)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+		/* RDTSCP start */
+		start = __rdtscp( & junk);
+
+		/* Ecall OUT SET */
+	    ecall_out_set_rdtscp(id, App_char_tmp, T_size);
+
+	    /* RDTSCP end */
+	    end = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	    printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_out_set(after)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+	    /* cycle */
+	    cycle += (end - start);
+	}
+
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
 uint64_t test_ecall_inout_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start=0, end=0, cycle=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_inout_set_rdtscp(id, App_char_tmp, T_size);
+		__rdtscp( & junk);
+	}
+#endif
+
+	test_reset_char_tmp(id, T_size);
+
+	/* loop */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_inout_set(before)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+		/* RDTSCP start */
+		start = __rdtscp( & junk);
+
+		/* Ecall INOUT SET */
+	    ecall_inout_set_rdtscp(id, App_char_tmp, T_size);
+
+	    /* RDTSCP end */
+	    end = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	    printf("[*-*,%c-%c,%c-%c] <- [T]test_ecall_inout_set(after)\n",App_char_tmp[0], App_char_tmp[T_size-1], App_char_var[0], App_char_var[T_size-1]);
+#endif
+
+	    /* cycle */
+	    cycle += (end - start);
+	}
+
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
 uint64_t test_ocall_in_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start1=0, end1=0, cycle1=0, cycle=0,
+			start2=0, end2=0, cycle2=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_ocall_in_set_rdtscp_dummy(id, App_int_tmp);
+		ecall_ocall_in_set_rdtscp(id, App_int_tmp);
+		__rdtscp( & junk);
+	}
+#endif
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall only */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_in_set_dummy(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start1 = __rdtscp( & junk);
+
+		/* Ecall IN */
+		ecall_ocall_in_set_rdtscp_dummy(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end1 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_in_set_dummy(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle1 += (end1 - start1);
+	}
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall -> ocall */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_in_set(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start2 = __rdtscp( & junk);
+
+		/* Ecall IN -> Ocall IN SET */
+		ecall_ocall_in_set_rdtscp(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end2 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_in_set(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle2 += (end2 - start2);
+	}
+	cycle = cycle2 - cycle1;
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
+
 uint64_t test_ocall_out_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start1=0, end1=0, cycle1=0, cycle=0,
+			start2=0, end2=0, cycle2=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_ocall_out_set_rdtscp_dummy(id, App_int_tmp);
+		ecall_ocall_out_set_rdtscp(id, App_int_tmp);
+		__rdtscp( & junk);
+	}
+#endif
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall only */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_out_set_dummy(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start1 = __rdtscp( & junk);
+
+		/* Ecall IN */
+		ecall_ocall_out_set_rdtscp_dummy(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end1 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_out_set_dummy(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle1 += (end1 - start1);
+	}
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall -> ocall */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_out_set(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start2 = __rdtscp( & junk);
+
+		/* Ecall IN -> Ocall OUT SET */
+		ecall_ocall_out_set_rdtscp(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end2 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_out_set(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle2 += (end2 - start2);
+	}
+	cycle = cycle2 - cycle1;
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
+
 uint64_t test_ocall_inout_set_rdtscp(sgx_enclave_id_t id)
 {
-	return 1;
+	/* RDTSCP var */
+	unsigned int junk = 0;
+	uint64_t start1=0, end1=0, cycle1=0, cycle=0,
+			start2=0, end2=0, cycle2=0, cycle_avg=0;
+
+	/* user var */
+	int i;
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* warm */
+#ifdef LAZYWARM
+	for(i=0;i<T_warm;i++)
+	{
+		__rdtscp( & junk);
+		ecall_ocall_inout_set_rdtscp_dummy(id, App_int_tmp);
+		ecall_ocall_inout_set_rdtscp(id, App_int_tmp);
+		__rdtscp( & junk);
+	}
+#endif
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall only */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_inout_set_dummy(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start1 = __rdtscp( & junk);
+
+		/* Ecall IN */
+		ecall_ocall_inout_set_rdtscp_dummy(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end1 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_inout_set_dummy(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle1 += (end1 - start1);
+	}
+
+	(*App_int_tmp) = (*App_int_dummy);
+	test_reset_char_tmp(id, T_size);
+
+	/* loop ecall -> ocall */
+	for(i=0;i<T_loop;i++)
+	{
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_inout_set(before)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* RDTSCP start */
+		start2 = __rdtscp( & junk);
+
+		/* Ecall IN -> Ocall IN PASS */
+		ecall_ocall_inout_set_rdtscp(id, App_int_tmp);
+
+		/* RDTSCP end */
+		end2 = __rdtscp( & junk);
+
+		/* LAZY print debug */
+#ifdef LAZYPDEBUG
+		printf("[0,%d,%d] <- [T]test_ocall_inout_set(after)\n",(*App_int_tmp), (*App_int_var));
+#endif
+
+		/* cycle */
+		cycle2 += (end2 - start2);
+	}
+	cycle = cycle2 - cycle1;
+	cycle_avg = (float)cycle / T_loop;
+	return cycle_avg;
 }
 
 uint64_t test_ecall_in_cp_rdtscp(sgx_enclave_id_t id)

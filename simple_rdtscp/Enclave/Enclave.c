@@ -321,22 +321,86 @@ void ecall_ocall_inout_pass_rdtscp_dummy(int* var)
 }
 
 void ecall_in_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(Enclave_char_tmp, var[0], size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	enclave_printf("[%c-%c,%c-%c,%c-%c] <- [E]ecall_in_set\n",var[0], var[size-1], Enclave_char_tmp[0], Enclave_char_tmp[size-1], Enclave_char_var[0], Enclave_char_var[size-1]);
+#endif
+}
 
 void ecall_out_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(var, Enclave_char_var[0], size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	enclave_printf("[%c-%c,%c-%c,%c-%c] <- [E]ecall_out_set\n",var[0], var[size-1], Enclave_char_tmp[0], Enclave_char_tmp[size-1], Enclave_char_var[0], Enclave_char_var[size-1]);
+#endif
+}
 
 void ecall_inout_set_rdtscp(char* var, size_t size)
-{}
+{
+	memset(Enclave_char_tmp, var[0], size);
+	memset(var, Enclave_char_var[0], size);
+
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	enclave_printf("[%c-%c,%c-%c,%c-%c] <- [E]ecall_inout_set\n",var[0], var[size-1], Enclave_char_tmp[0], Enclave_char_tmp[size-1], Enclave_char_var[0], Enclave_char_var[size-1]);
+#endif
+}
 
 void ecall_ocall_in_set_rdtscp(int* var)
-{}
+{
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	(*Enclave_int_tmp) = (*var);
+	//enclave_printf("[%d,%d,%d] <- [E]ocall_in_cp\n",(*var), (*Enclave_int_tmp), (*Enclave_int_var));
+	(*Enclave_int_tmp) = (*Enclave_int_var);
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_in_set(before)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+
+	ocall_in_set_rdtscp(Enclave_char_tmp, Enclave_size);
+
+#ifdef LAZYPDEBUG
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_in_set(after)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+}
 
 void ecall_ocall_out_set_rdtscp(int* var)
-{}
+{
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	(*Enclave_int_tmp) = (*var);
+	//enclave_printf("[%d,%d,%d] <- [E]ocall_in_cp\n",(*var), (*Enclave_int_tmp), (*Enclave_int_var));
+	(*Enclave_int_tmp) = (*Enclave_int_var);
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_out_set(before)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+
+	ocall_out_set_rdtscp(Enclave_char_tmp, Enclave_size);
+
+#ifdef LAZYPDEBUG
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_out_set(after)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+}
 
 void ecall_ocall_inout_set_rdtscp(int* var)
-{}
+{
+	/* LAZY print debug */
+#ifdef LAZYPDEBUG
+	(*Enclave_int_tmp) = (*var);
+	//enclave_printf("[%d,%d,%d] <- [E]ocall_in_cp\n",(*var), (*Enclave_int_tmp), (*Enclave_int_var));
+	(*Enclave_int_tmp) = (*Enclave_int_var);
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_inout_set(before)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+
+	ocall_inout_set_rdtscp(Enclave_char_tmp, Enclave_size);
+
+#ifdef LAZYPDEBUG
+	enclave_printf("[*-*,%c-%c,%c-%c] <- [E]ocall_inout_set(after)\n", Enclave_char_tmp[0], Enclave_char_tmp[Enclave_size-1], Enclave_char_var[0], Enclave_char_var[Enclave_size-1]);
+#endif
+}
 
 void ecall_ocall_in_set_rdtscp_dummy(int* var)
 {
