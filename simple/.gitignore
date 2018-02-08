@@ -3,5 +3,8 @@
 *.so
 *.a
 
+.project
+.settings
+
 *cscope*
 tags

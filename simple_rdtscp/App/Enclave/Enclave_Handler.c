@@ -90,17 +90,38 @@ static sgx_errlist_t sgx_errlist[] = {
 void handler_print_app_mode(void)
 {
 	//printf("**************************************\n");
+	char app_mode_str[100] = "RUN -> app [";
 #ifdef LAZYHWDEBUG
-	printf("RUN -> app [HW | DEBUG]\n\n");
+	sprintf(app_mode_str,"%s HW | DEBUG", app_mode_str);
 #elif LAZYHWPRERELEASE
-	printf("RUN -> app_prerelease [HW | PRERELEASE]\n\n");
+	sprintf(app_mode_str,"%s HW | PRERELEASE", app_mode_str);
 #elif LAZYHWRELEASE
-	printf("RUN -> app [HW | DEBUG]\n\n");
+	sprintf(app_mode_str,"%s HW | RELEASE", app_mode_str);
 #elif LAZYSIM
-	printf("RUN -> app [SIMULATION | - ]\n\n");
+	sprintf(app_mode_str,"%s SW | SIM", app_mode_str);
 #else
-	printf("RUN -> app [Something is wrong\n\n");
+	sprintf(app_mode_str,"%s ?", app_mode_str);
 #endif
+#ifdef LAZYWARM
+	sprintf(app_mode_str,"%s | WARM", app_mode_str);
+#endif
+#ifdef LAZYPDEBUG
+	sprintf(app_mode_str,"%s | PDEBUG", app_mode_str);
+#endif
+#ifdef TESTINTPASS
+	sprintf(app_mode_str,"%s | INT PASS", app_mode_str);
+#endif
+#ifdef TESTCHARPASS
+	sprintf(app_mode_str,"%s | CHAR PASS", app_mode_str);
+#endif
+#ifdef TESTCHARSET
+	sprintf(app_mode_str,"%s | CHAR SET", app_mode_str);
+#endif
+#ifdef TESTCHARCP
+	sprintf(app_mode_str,"%s | CHAR CP", app_mode_str);
+#endif
+	sprintf(app_mode_str,"%s ]\n\n", app_mode_str);
+	printf("%s",app_mode_str);
 	//printf("**************************************\n");
 }
 void handler_print_error_msg(sgx_status_t ret)

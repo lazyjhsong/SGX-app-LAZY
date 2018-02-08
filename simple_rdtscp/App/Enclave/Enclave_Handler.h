@@ -17,6 +17,9 @@
 #include "sgx_eid.h"     /* sgx_enclave_id_t */
 #include "sgx_urts.h"
 
+/* user h */
+#include "envdefine.h"
+
 /* def T/F */
 #ifndef TRUE
 #define TRUE 1

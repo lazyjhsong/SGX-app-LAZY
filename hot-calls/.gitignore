@@ -1,0 +1,3 @@
+*.so
+/measurments/*
+/test_hotcalls

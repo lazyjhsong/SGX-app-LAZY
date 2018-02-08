@@ -1,3 +1,0 @@
-/home/jhsong/work/sgx/SGX-app-LAZY/SampleCode_by_intel/LocalAttestation/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/jhsong/work/sgx/SGX-app-LAZY/SampleCode_by_intel/LocalAttestation/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/jhsong/work/sgx/SGX-app-LAZY/SampleCode_by_intel/LocalAttestation/cmake-build-debug/CMakeFiles/app.dir

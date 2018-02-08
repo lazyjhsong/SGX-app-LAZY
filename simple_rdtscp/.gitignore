@@ -3,5 +3,9 @@
 *.so
 *.a
 
+.project
+.cproject
+.settings
+
 *cscope*
 tags
