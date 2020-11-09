@@ -1,5 +1,5 @@
 LAZYjhSong's SGX app
-jhsong@calab.kaist.ac.kr
+jhsong@kaist.ac.kr
 
 simple
 SGX code practice
