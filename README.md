@@ -1,1 +1,17 @@
-# https-cabackup.kaist.ac.kr-19443-LAZYjhSong-SGX-app-LAZY
+LAZYjhSong's SGX app
+jhsong@calab.kaist.ac.kr
+
+simple
+SGX code practice
+
+Template_C_LAZY
+SGX Template for C by LAZY
+
+SampleCode_by_intel
+https://github.com/intel/linux-sgx
+
+SampleCode_template
+https://github.com/digawp/hello-enclave.git
+
+test-sgx-hw
+Test SGX HW
